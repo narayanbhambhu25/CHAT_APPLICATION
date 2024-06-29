@@ -5,6 +5,7 @@ import {
   VStack,
   InputGroup,
   InputRightElement,
+  useToast,
 } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/button";
 import React from "react";
@@ -18,10 +19,54 @@ const SignUp = () => {
   const [password, setPassword] = useState();
   const [pic, setPic] = useState();
   const [picLoading, setPicLoading] = useState(false);
+  const toast = useToast();
 
   const handleClick = () => setShow(!show);
 
-  const postDetails = (pics) => {};
+  const postDetails = (pics) => {
+    setPicLoading(true);
+    if (pics === undefined) {
+      toast({
+        title: "Please Select an Image!",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      return;
+    }
+    console.log(pics);
+    if (pics.type === "image/jpeg" || pics.type === "image/png") {
+      const data = new FormData();
+      data.append("file", pics);
+      data.append("upload_preset", "Chat-App");
+      data.append("cloud_name", "diconntkh");
+      fetch("https://api.cloudinary.com/v1_1/diconntkh/image/upload", {
+        method: "post",
+        body: data,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setPic(data.url.toString());
+          console.log(data.url.toString());
+          setPicLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setPicLoading(false);
+        });
+    } else {
+      toast({
+        title: "Please Select an Image!",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setPicLoading(false);
+      return;
+    }
+  };
   const submitHandler = async () => {};
 
   return (
