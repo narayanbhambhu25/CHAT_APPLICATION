@@ -5,10 +5,13 @@ import {
   VStack,
   InputGroup,
   InputRightElement,
+  useToast,
 } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/button";
 import React from "react";
 import { useState } from "react";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 const Login = () => {
   const [show, setShow] = useState(false);
@@ -17,9 +20,61 @@ const Login = () => {
 
   const [picLoading, setPicLoading] = useState(false);
 
+  const toast = useToast();
+  const history = useHistory();
+
   const handleClick = () => setShow(!show);
 
-  const submitHandler = async () => {};
+  const submitHandler = async () => {
+    setPicLoading(true);
+    if (!email || !password) {
+      toast({
+        title: "Please Fill all the Feilds",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setPicLoading(false);
+      return;
+    }
+
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
+
+      const { data } = await axios.post(
+        "/api/user/login",
+        { email, password },
+        config
+      );
+
+      toast({
+        title: "Login Successful",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      setPicLoading(false);
+      history.push("/chats");
+    } catch (error) {
+      toast({
+        title: "Error Occured!",
+        description: error.response.data.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setPicLoading(false);
+    }
+  };
 
   return (
     <VStack spacing="5px">
@@ -28,6 +83,7 @@ const Login = () => {
         <Input
           type="email"
           placeholder="Enter Your Email Address"
+          value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
       </FormControl>
@@ -38,6 +94,7 @@ const Login = () => {
           <Input
             type={show ? "text" : "password"}
             placeholder="Enter Password"
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <InputRightElement width="4.5rem">
