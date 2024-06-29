@@ -8,6 +8,8 @@ dotenv.config();
 connectDB();
 const app = express();
 
+app.use(express.json()); // to exxept js0n data
+
 app.get("/", (req, res) => {
   res.send("API is running fastly");
 });
