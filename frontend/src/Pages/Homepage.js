@@ -2,17 +2,17 @@ import React from "react";
 import {
   Container,
   Box,
+  Text,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
-  Text,
-} from "@chakra-ui/react"; // container makes our site responnsive
+} from "@chakra-ui/react";
+import SignUp from "../components/Authentication/Signup";
 import Login from "../components/Authentication/Login";
-import Signup from "../components/Authentication/Signup";
 
-const Homepage = () => {
+const HomePage = () => {
   return (
     <Container maxW="xl" centerContent>
       <Box
@@ -25,11 +25,23 @@ const Homepage = () => {
         borderRadius="lg"
         borderWidth="1px"
       >
-        <Text fontSize="4xl" fontFamily="Work sans">
+        <Text
+          fontSize="2xl"
+          fontFamily="Work sans"
+          color="black"
+          textAlign="center"
+        >
           Talk-A-Tive
         </Text>
       </Box>
-      <Box bg="white" w="100%" p={4} borderRadius="lg" borderWidth="1px">
+      <Box
+        bg="white"
+        w="100%"
+        p={4}
+        borderRadius="lg"
+        borderWidth="1px"
+        color="black"
+      >
         <Tabs isFitted variant="soft-rounded">
           <TabList mb="1em">
             <Tab>Login</Tab>
@@ -40,7 +52,7 @@ const Homepage = () => {
               <Login />
             </TabPanel>
             <TabPanel>
-              <Signup />
+              <SignUp />
             </TabPanel>
           </TabPanels>
         </Tabs>
@@ -49,4 +61,4 @@ const Homepage = () => {
   );
 };
 
-export default Homepage;
+export default HomePage;

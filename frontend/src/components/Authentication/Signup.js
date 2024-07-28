@@ -5,16 +5,16 @@ import {
   VStack,
   InputGroup,
   InputRightElement,
+  Button,
   useToast,
+  Toast,
 } from "@chakra-ui/react";
-import { Button } from "@chakra-ui/button";
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-
 const SignUp = () => {
   const [show, setShow] = useState(false);
+
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [confirmpassword, setConfirmpassword] = useState();
@@ -23,14 +23,15 @@ const SignUp = () => {
   const [picLoading, setPicLoading] = useState(false);
   const toast = useToast();
   const history = useHistory();
+  // fhandle functions
 
   const handleClick = () => setShow(!show);
 
   const postDetails = (pics) => {
     setPicLoading(true);
-    if (pics === undefined) {
+    if (pics == undefined) {
       toast({
-        title: "Please Select an Image!",
+        title: "Passwords Do Not Match",
         status: "warning",
         duration: 5000,
         isClosable: true,
@@ -38,13 +39,13 @@ const SignUp = () => {
       });
       return;
     }
-    console.log(pics);
+
     if (pics.type === "image/jpeg" || pics.type === "image/png") {
       const data = new FormData();
       data.append("file", pics);
       data.append("upload_preset", "Chat-App");
-      data.append("cloud_name", "diconntkh");
-      fetch("https://api.cloudinary.com/v1_1/diconntkh/image/upload", {
+      data.append("cloud_name", "rohitash");
+      fetch("https://api.cloudinary.com/v1_1/rohitash/image/upload", {
         method: "post",
         body: data,
       })
@@ -70,6 +71,7 @@ const SignUp = () => {
       return;
     }
   };
+
   const submitHandler = async () => {
     setPicLoading(true);
     if (!name || !email || !password || !confirmpassword) {
@@ -135,7 +137,7 @@ const SignUp = () => {
   };
 
   return (
-    <VStack spacing="5px">
+    <VStack spacing="5px" color="black">
       <FormControl id="first-name" isRequired>
         <FormLabel>Name</FormLabel>
         <Input
@@ -143,7 +145,6 @@ const SignUp = () => {
           onChange={(e) => setName(e.target.value)}
         />
       </FormControl>
-
       <FormControl id="email" isRequired>
         <FormLabel>Email Address</FormLabel>
         <Input
@@ -152,7 +153,6 @@ const SignUp = () => {
           onChange={(e) => setEmail(e.target.value)}
         />
       </FormControl>
-
       <FormControl id="password" isRequired>
         <FormLabel>Password</FormLabel>
         <InputGroup size="md">
@@ -168,7 +168,6 @@ const SignUp = () => {
           </InputRightElement>
         </InputGroup>
       </FormControl>
-
       <FormControl id="password" isRequired>
         <FormLabel>Confirm Password</FormLabel>
         <InputGroup size="md">
@@ -194,7 +193,6 @@ const SignUp = () => {
           onChange={(e) => postDetails(e.target.files[0])}
         />
       </FormControl>
-
       <Button
         colorScheme="blue"
         width="100%"
@@ -202,7 +200,7 @@ const SignUp = () => {
         onClick={submitHandler}
         isLoading={picLoading}
       >
-        Sign Up
+        Signup
       </Button>
     </VStack>
   );

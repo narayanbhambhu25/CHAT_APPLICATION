@@ -1,25 +1,26 @@
 const express = require("express");
-const dotenv = require("dotenv");
 const { chats } = require("./data/data");
+const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
-const { notFound, errorHandler } = require("./middlewares/errorMiddlewares");
+const chatRoutes = require("./routes/chatRoutes");
 
+const { notFound, errorHandler } = require("./middleware/errorMiddlewares");
+const app = express();
 dotenv.config();
 connectDB();
-const app = express();
 
-app.use(express.json()); // to exxept js0n data
+app.use(express.json()); //to except json data
+
+const PORT = process.env.PORT;
 
 app.get("/", (req, res) => {
-  res.send("API is running fastly");
+  res.send("API IS RUNNING");
 });
 
 app.use("/api/user", userRoutes);
-
-app.use(notFound); // for errorhandling
+app.use("/api/chat", chatRoutes);
+app.use(notFound);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
-
-app.listen(`${PORT}`, console.log(`Server is running on port ${PORT}`));
+app.listen(PORT, console.log(`server started on port ${PORT}`));

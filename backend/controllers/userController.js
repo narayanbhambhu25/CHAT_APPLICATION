@@ -7,7 +7,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   if (!name || !email || !password) {
     res.status(400);
-    throw new Error("Please Enter all the Feilds");
+    throw new Error("please Enter all the fields");
   }
 
   const userExists = await User.findOne({ email });
@@ -29,13 +29,12 @@ const registerUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      //   isAdmin: user.isAdmin,
       pic: user.pic,
       token: generateToken(user._id),
     });
   } else {
     res.status(400);
-    throw new Error("User not found");
+    throw new Error("Failed to createa new user");
   }
 });
 
@@ -49,7 +48,6 @@ const authUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      isAdmin: user.isAdmin,
       pic: user.pic,
       token: generateToken(user._id),
     });
@@ -59,7 +57,6 @@ const authUser = asyncHandler(async (req, res) => {
   }
 });
 
-// /api/user/
 const allUsers = asyncHandler(async (req, res) => {
   const keyword = req.query.search
     ? {
@@ -72,6 +69,7 @@ const allUsers = asyncHandler(async (req, res) => {
 
   const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
   res.send(users);
+  //   .find({ _id: { $ne: req.user._id } });
 });
 
 module.exports = { registerUser, authUser, allUsers };
