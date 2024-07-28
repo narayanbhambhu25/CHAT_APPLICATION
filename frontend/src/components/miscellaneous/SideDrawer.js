@@ -4,12 +4,17 @@ import React, { useState } from "react";
 import { Tooltip } from "@chakra-ui/tooltip";
 import {
   Avatar,
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
   Menu,
   MenuButton,
   MenuDivider,
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/hooks";
 import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
 
 import { ChatState } from "../../Context/ChatProvider";
@@ -24,6 +29,7 @@ const SideDrawer = () => {
 
   const { user } = ChatState();
   const history = useHistory();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const logoutHandler = () => {
     localStorage.removeItem("userInfo");
@@ -42,7 +48,7 @@ const SideDrawer = () => {
         borderWidth="5px"
       >
         <Tooltip label="Search Users to chat" hasArrow placement="bottom-end">
-          <Button varient="ghost">
+          <Button varient="ghost" onClick={onOpen}>
             <i class="fas fa-search"></i>
             <Text display={{ base: "none", md: "flex" }} px={4}>
               Seacrh User
@@ -78,6 +84,12 @@ const SideDrawer = () => {
           </Menu>
         </div>
       </Box>
+      <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerHeader borderBottomWidth="1px">Search User</DrawerHeader>
+        </DrawerContent>
+      </Drawer>
     </>
   );
 };
