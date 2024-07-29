@@ -14,7 +14,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-// import UserBadgeItem from "../userAvatar/UserBadgeItem";
+import UserBadgeItem from "../UserAvatar/UserBadgeItem";
 import UserListItem from "../UserAvatar/UserListItem";
 import { ChatState } from "../../Context/ChatProvider";
 import axios from "axios";
@@ -60,7 +60,20 @@ const GroupChatModal = ({ children }) => {
 
   const handleDelete = () => {};
 
-  const handleGroup = () => {};
+  const handleGroup = (userToAdd) => {
+    if (selectedUsers.includes(userToAdd)) {
+      toast({
+        title: "User already added",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+      });
+      return;
+    }
+
+    setSelectedUsers([...selectedUsers, userToAdd]);
+  };
 
   const handleSubmit = () => {};
 
@@ -95,15 +108,15 @@ const GroupChatModal = ({ children }) => {
                 onChange={(e) => handleSearch(e.target.value)}
               />
             </FormControl>
-            {/* <Box w="100%" display="flex" flexWrap="wrap">
-                 {selectedUsers.map((u) => (
-                   <UserBadgeItem
-                     key={u._id}
-                     user={u}
-                     handleFunction={() => handleDelete(u)}
-                   />
-                 ))}
-               </Box> */}
+            <Box w="100%" display="flex" flexWrap="wrap">
+              {selectedUsers.map((u) => (
+                <UserBadgeItem
+                  key={u._id}
+                  user={u}
+                  handleFunction={() => handleDelete(u)}
+                />
+              ))}
+            </Box>
             {loading ? (
               // <ChatLoading />
               <div>Loading...</div>
