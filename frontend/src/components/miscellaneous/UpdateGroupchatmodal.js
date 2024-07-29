@@ -20,6 +20,7 @@ import React, { useState } from "react";
 import UserBadgeItem from "../UserAvatar/UserBadgeItem";
 import UserListItem from "../UserAvatar/UserListItem";
 import { ChatState } from "../../Context/ChatProvider";
+import axios from "axios";
 
 const UpdateGroupchatmodal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -34,7 +35,39 @@ const UpdateGroupchatmodal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
 
   const handleRemove = () => {};
 
-  const handleRename = () => {};
+  const handleRename = async () => {
+    if (!groupChatName) return;
+    try {
+      setRenameLoading(true);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `/api/chat/rename`,
+        {
+          chatId: selectedChat._id,
+          chatName: groupChatName,
+        },
+        config
+      );
+      setSelectedChat(data);
+      setFetchAgain(!fetchAgain);
+      setRenameLoading(false);
+    } catch (error) {
+      toast({
+        title: "Error Occured!",
+        description: error.response.data.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setRenameLoading(false);
+    }
+    setGroupChatName("");
+  };
 
   const handleSearch = () => {};
 
