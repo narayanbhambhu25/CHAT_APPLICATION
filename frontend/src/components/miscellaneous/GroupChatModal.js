@@ -58,7 +58,9 @@ const GroupChatModal = ({ children }) => {
     }
   };
 
-  const handleDelete = () => {};
+  const handleDelete = (delUser) => {
+    setSelectedUsers(selectedUsers.filter((sel) => sel._id !== delUser._id));
+  };
 
   const handleGroup = (userToAdd) => {
     if (selectedUsers.includes(userToAdd)) {
