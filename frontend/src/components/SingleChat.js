@@ -79,6 +79,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           },
           config
         );
+        //1
 
         socket.emit("new message", data);
         setMessages([...messages, data]);
