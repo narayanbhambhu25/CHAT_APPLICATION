@@ -16,6 +16,8 @@ import UpdateGroupchatmodal from "./miscellaneous/UpdateGroupchatmodal";
 import axios from "axios";
 import "./styles.css";
 import ScrollableChat from "./ScrollableChat";
+import Lottie from "react-lottie";
+import animationData from "../animations/typing.json";
 
 import io from "socket.io-client";
 
@@ -31,6 +33,15 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [typing, setTyping] = useState(false);
   const [istyping, setIsTyping] = useState(false);
   const toast = useToast();
+
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
 
   const fetchMessages = async () => {
     if (!selectedChat) return;
@@ -218,7 +229,18 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               isRequired
               mt={3}
             >
-              {istyping ? <div>Loading...</div> : <></>}
+              {istyping ? (
+                <div>
+                  <Lottie
+                    options={defaultOptions}
+                    // height={50}
+                    width={70}
+                    style={{ marginBottom: 15, marginLeft: 0 }}
+                  />
+                </div>
+              ) : (
+                <></>
+              )}
               <Input
                 variant="filled"
                 bg="#E0E0E0"
